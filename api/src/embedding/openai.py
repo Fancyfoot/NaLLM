@@ -6,7 +6,7 @@ class OpenAIEmbedding(BaseEmbedding):
     """Wrapper around OpenAI embedding models."""
 
     def __init__(
-        self, openai_api_key: str, model_name: str = "text-embedding-ada-002"
+        self, openai_api_key: str, model_name: str = "text-embedding-3-small"
     ) -> None:
         openai.api_key = openai_api_key
         self.model = model_name

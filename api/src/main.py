@@ -81,7 +81,7 @@ async def questionProposalsForCurrentDb(payload: questionProposalPayload):
         database=neo4j_connection,
         llm=OpenAIChat(
             openai_api_key=api_key,
-            model_name="gpt-3.5-turbo-0613",
+            model_name="gpt-3.5-turbo-0125",
             max_tokens=512,
             temperature=0.8,
         ),
@@ -130,12 +130,12 @@ async def websocket_endpoint(websocket: WebSocket):
 
             default_llm = OpenAIChat(
                 openai_api_key=api_key,
-                model_name=data.get("model_name", "gpt-3.5-turbo-0613"),
+                model_name=data.get("model_name", "gpt-4-0125-preview"),
             )
             summarize_results = SummarizeCypherResult(
                 llm=OpenAIChat(
                     openai_api_key=api_key,
-                    model_name="gpt-3.5-turbo-0613",
+                    model_name="gpt-3.5-turbo-0125",
                     max_tokens=128,
                 )
             )
@@ -206,7 +206,7 @@ async def root(payload: ImportPayload):
         result = ""
 
         llm = OpenAIChat(
-            openai_api_key=api_key, model_name="gpt-3.5-turbo-16k", max_tokens=4000
+            openai_api_key=api_key, model_name="gpt-4-0125-preview", max_tokens=4000
         )
 
         if not payload.neo4j_schema:
@@ -214,7 +214,8 @@ async def root(payload: ImportPayload):
             result = extractor.run(data=payload.input)
         else:
             extractor = DataExtractorWithSchema(llm=llm)
-            result = extractor.run(schema=payload.neo4j_schema, data=payload.input)
+            result = extractor.run(
+                schema=payload.neo4j_schema, data=payload.input)
 
         print("Extracted result: " + str(result))
 
@@ -248,7 +249,7 @@ async def companyInformation(payload: companyReportPayload):
 
     llm = OpenAIChat(
         openai_api_key=api_key,
-        model_name="gpt-3.5-turbo-16k-0613",
+        model_name="gpt-3.5-turbo-0125",
         max_tokens=512,
     )
     print("Running company report for " + payload.company)
